@@ -1,12 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { useEffect, useState } from 'react';
+import { ActivityIndicator,Text, StyleSheet, View, Button } from 'react-native';
 
 export default function App() {
+
+  const [isPending, setisPending] = useState (true);
+
+  const [count, setCount] = useState (0);
+  const [timerId, setTimerId] = useState ();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setisPending(false)
+    }, 2000);
+  }, []); 
+  useEffect(() => {
+    const timerId = setInterval (() => {
+      setCount(prev => prev+1)
+    }, 300)
+    setTimerId(timerId);
+
+  }, []);
+  
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <ActivityIndicator size='large'  animating={isPending}>
+
+      </ActivityIndicator>
+      {!isPending && <Text>{count}</Text>}
+      <Button title='stpo' onPress={()=> clearInterval(timerId)}></Button>
+      
+
     </View>
+      
+
+    
   );
 }
 
